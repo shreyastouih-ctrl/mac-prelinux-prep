@@ -26,35 +26,43 @@ show_banner() {
 main_menu() {
     show_banner
     echo -e "${BOLD}Select a macOS Pre-Linux action:${RESET}\n"
-    echo -e " ${CYAN}1)${RESET} Run Pre-Flight Mac Hardware & Security Audit"
-    echo -e " ${GREEN}2)${RESET} Safely Shrink APFS Container (Create Free Space for Linux)"
-    echo -e " ${GREEN}3)${RESET} Create Bootable Linux USB Flash Drive (diskutil + dd)"
-    echo -e " ${GREEN}4)${RESET} T2 Security Chip & Startup Security Utility Assistant"
-    echo -e " ${GREEN}5)${RESET} Pre-Install rEFInd Graphical Bootloader on macOS EFI"
-    echo -e " ${GREEN}6)${RESET} Trigger Time Machine Backup before Disk Modification"
+    echo -e " ${CYAN}1)${RESET} Inspect Mac Hardware & Get Recommended Linux OS"
+    echo -e " ${CYAN}2)${RESET} Run Pre-Flight Mac Hardware & Security Audit"
+    echo -e " ${GREEN}3)${RESET} Safely Shrink APFS Container (Create Free Space for Linux)"
+    echo -e " ${GREEN}4)${RESET} Create Bootable Linux USB Flash Drive (diskutil + dd)"
+    echo -e " ${GREEN}5)${RESET} T2 Security Chip & Startup Security Utility Assistant"
+    echo -e " ${GREEN}6)${RESET} Pre-Install rEFInd Graphical Bootloader on macOS EFI"
+    echo -e " ${GREEN}7)${RESET} Trigger Time Machine Backup before Disk Modification"
+    echo -e " ${CYAN}8)${RESET} Auto-Update Mac-PreLinux-Prep Suite"
     echo -e " ${RED}0) Exit${RESET}"
     echo -e "\n================================================================="
-    read -p "Enter choice [0-6]: " choice
+    read -p "Enter choice [0-8]: " choice
 
     case "$choice" in
         1)
-            bash "$SCRIPT_DIR/scripts/check_mac_hardware.sh" || true
+            bash "$SCRIPT_DIR/scripts/hardware_os_recommender_mac.sh" || true
             ;;
         2)
-            bash "$SCRIPT_DIR/scripts/partition_apfs_mac.sh" || true
+            bash "$SCRIPT_DIR/scripts/check_mac_hardware.sh" || true
             ;;
         3)
-            bash "$SCRIPT_DIR/scripts/create_bootable_usb.sh" || true
+            bash "$SCRIPT_DIR/scripts/partition_apfs_mac.sh" || true
             ;;
         4)
-            bash "$SCRIPT_DIR/scripts/t2_secure_boot_guide.sh" || true
+            bash "$SCRIPT_DIR/scripts/create_bootable_usb.sh" || true
             ;;
         5)
-            bash "$SCRIPT_DIR/scripts/preinstall_refind_mac.sh" || true
+            bash "$SCRIPT_DIR/scripts/t2_secure_boot_guide.sh" || true
             ;;
         6)
+            bash "$SCRIPT_DIR/scripts/preinstall_refind_mac.sh" || true
+            ;;
+        7)
             echo -e "${GREEN}Initiating Time Machine Backup...${RESET}"
             tmutil startbackup 2>/dev/null || echo -e "${YELLOW}Please connect your Time Machine backup drive.${RESET}"
+            ;;
+        8)
+            bash "$SCRIPT_DIR/scripts/auto_updater_mac.sh" || true
             ;;
         0)
             echo -e "${BOLD}${GREEN}Preparation complete! Boot your Linux USB by holding Option ⌥ key. 🍏⚡${RESET}"
